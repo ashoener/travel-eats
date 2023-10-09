@@ -1,0 +1,68 @@
+body {
+    background: linear-gradient(to bottom, #0077B6, #00587C);
+    font-family: Arial, sans-serif;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #00587C;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 36px;
+}
+#travelheader {
+    font-size: 30px;
+    text-align:left;
+    margin-right: 85%;
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+}
+.searchField{
+    text-align: center;
+}
+
+#search-results {
+    padding: 20px;
+}
+
+h2 {
+    font-size: 40px;
+}
+h3 {
+    font-size: 30px;
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #0096C7;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#foodButton{
+    color:#f2f0f5;
+    background-color: #3dade9;
+}
+
+button:hover {
+    background-color: #0077B6;
+}
