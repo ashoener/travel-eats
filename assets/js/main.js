@@ -1,4 +1,5 @@
 const corsProxyUrl = "http://134.195.14.94:8051/";
+const mapId = "IDc40eba848b96533e";
 const yelpApiKey =
   "YKZv5pI1m6Q1sXsMu3GIrrFrGzsvx6gLKRAMct8l90LQHCIQFI5lhsqc_po2q4w_juN71vfJTi1_EBbO3CU3flSKoo25L4RgDSfIj6SU46bHUq7RJkUFHvj3xhwkZXYx";
 const excludedCategories = [
@@ -10,11 +11,16 @@ const excludedCategories = [
   "grocery",
 ];
 
+let locCache = {};
+
 // https://docs.developer.yelp.com/reference/v3_business_search
 async function getCurrentLocation() {
-  return new Promise((res, rej) => {
+  if ("latitude" in locCache) return locCache;
+  const loc = await new Promise((res, rej) => {
     navigator.geolocation.getCurrentPosition((pos) => res(pos.coords), rej);
   });
+  locCache = loc;
+  return loc;
 }
 
 async function searchYelp(location) {
@@ -55,3 +61,38 @@ async function searchYelp(location) {
   });
   return businesses;
 }
+
+async function addMapMarkers(places) {
+  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+  const { InfoWindow } = await google.maps.importLibrary("maps");
+  const infoWindow = new InfoWindow();
+  for (let place of places) {
+    const coords = place.coordinates;
+    const marker = new AdvancedMarkerElement({
+      map: window.googleMap,
+      title: place.name,
+      position: { lat: coords.latitude, lng: coords.longitude },
+    });
+
+    marker.addListener("click", ({ domEvent, latLng }) => {
+      const { target } = domEvent;
+
+      infoWindow.close();
+      infoWindow.setContent(marker.title);
+      infoWindow.open(marker.map, marker);
+    });
+  }
+}
+
+async function initMap(e) {
+  const { Map } = await google.maps.importLibrary("maps");
+  const loc = await getCurrentLocation();
+
+  window.googleMap = new Map(document.getElementById("map"), {
+    center: { lat: loc.latitude, lng: loc.longitude },
+    zoom: 15,
+    mapId,
+  });
+}
+
+initMap();
