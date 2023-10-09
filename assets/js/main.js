@@ -14,7 +14,36 @@ const excludedCategories = [
 let locCache = {};
 let mapMarkers = [];
 
-// https://docs.developer.yelp.com/reference/v3_business_search
+/**
+ * @typedef Place
+ * @property {String} name
+ * @property {{
+ *      latitude: number,
+ *      longitude: number
+ * }} coordinates
+ * @property {Array<{
+ *      alias: String,
+ *      title: String
+ * }>} categories
+ * @property {{
+ *      address1: String,
+ *      address2: String,
+ *      address3: String | null,
+ *      city: String,
+ *      state: String,
+ *      country: String,
+ *      display_address: String[]
+ * }} location
+ * @property {String} url
+ */
+
+/**
+ * Get the current location of the user
+ * @returns {Promise<{
+ *      latitude: number,
+ *      longitude: number
+ * }>}
+ */
 async function getCurrentLocation() {
   if ("latitude" in locCache) return locCache;
   const loc = await new Promise((res, rej) => {
@@ -24,6 +53,15 @@ async function getCurrentLocation() {
   return loc;
 }
 
+// https://docs.developer.yelp.com/reference/v3_business_search
+/**
+ * Search the Yelp API for any businesses that sell food, within 5 miles, and up to 40 results.
+ * @param {{
+ *      latitude: number,
+ *      longitude: number
+ * }| String} location
+ * @returns {Promise<Array<Place>>}
+ */
 async function searchYelp(location) {
   const params = new URLSearchParams();
   if (typeof location == "object") {
@@ -55,8 +93,11 @@ async function searchYelp(location) {
   const existingAddress = [];
   const businesses = data.businesses.filter((b) => {
     const address = b.location.address1;
+    //   Check if address is already in list. This filters out duplicate entries.
     if (existingAddress.includes(address)) return false;
     existingAddress.push(address);
+    //   Remove categories that indicate the location being something other than a restaurant
+    //   or food establishment
     if (b.categories.find((c) => excludedCategories.includes(c.alias)))
       return false;
     return true;
@@ -64,6 +105,10 @@ async function searchYelp(location) {
   return businesses;
 }
 
+/**
+ * Add map markers for an array of locations returned by the Yelp API.
+ * @param {Array<Place>} places
+ */
 async function addMapMarkers(places) {
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
   const { InfoWindow } = await google.maps.importLibrary("maps");
@@ -96,6 +141,9 @@ async function addMapMarkers(places) {
   }
 }
 
+/**
+ * Remove all of the map markers
+ */
 function clearMapMarkers() {
   for (let marker of mapMarkers) {
     marker.map = null;
@@ -103,7 +151,10 @@ function clearMapMarkers() {
   mapMarkers = [];
 }
 
-async function initMap(e) {
+/**
+ * Load the map
+ */
+async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
   const loc = await getCurrentLocation();
 
