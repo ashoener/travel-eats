@@ -9,6 +9,7 @@ const excludedCategories = [
   "beer_and_wine",
   "waterstores",
   "grocery",
+  "healthmarkets",
 ];
 
 // Default location is Austin
