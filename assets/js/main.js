@@ -12,6 +12,7 @@ const excludedCategories = [
 ];
 
 let locCache = {};
+let mapMarkers = [];
 
 // https://docs.developer.yelp.com/reference/v3_business_search
 async function getCurrentLocation() {
@@ -34,6 +35,7 @@ async function searchYelp(location) {
   params.set("term", "food");
   params.set("categories", "");
   params.set("sort_by", "distance");
+  params.set("radius", "8000"); // approximately 5 miles
   params.set("limit", 40);
 
   const data = await fetch(
@@ -73,6 +75,7 @@ async function addMapMarkers(places) {
       title: place.name,
       position: { lat: coords.latitude, lng: coords.longitude },
     });
+    mapMarkers.push(marker);
 
     marker.addListener("click", ({ domEvent, latLng }) => {
       const { target } = domEvent;
@@ -91,6 +94,13 @@ async function addMapMarkers(places) {
       infoWindow.open(marker.map, marker);
     });
   }
+}
+
+function clearMapMarkers() {
+  for (let marker of mapMarkers) {
+    marker.map = null;
+  }
+  mapMarkers = [];
 }
 
 async function initMap(e) {
