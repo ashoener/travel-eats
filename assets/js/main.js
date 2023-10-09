@@ -59,6 +59,27 @@ async function getCurrentLocation() {
   return loc;
 }
 
+/**
+ * Search for places on Yelp, and display them on the map
+ * @param {{
+ *      latitude: number,
+ *      longitude: number
+ * }| String} location
+ */
+async function searchAndDisplay(location) {
+  clearMapMarkers();
+  const places = await searchYelp(location);
+  if (places.length) {
+    await addMapMarkers(places);
+    //   Set center to first location
+    const firstCoords = places[0].coordinates;
+    googleMap.setCenter({
+      lat: firstCoords.latitude,
+      lng: firstCoords.longitude,
+    });
+  }
+}
+
 // https://docs.developer.yelp.com/reference/v3_business_search
 /**
  * Search the Yelp API for any businesses that sell food, within 5 miles, and up to 40 results.
@@ -80,7 +101,7 @@ async function searchYelp(location) {
   params.set("categories", "");
   params.set("sort_by", "distance");
   params.set("radius", "8000"); // approximately 5 miles
-  params.set("limit", 40);
+  params.set("limit", 50);
 
   const data = await fetch(
     corsProxyUrl +
@@ -121,6 +142,7 @@ async function addMapMarkers(places) {
   const infoWindow = new InfoWindow();
   for (let place of places) {
     const coords = place.coordinates;
+    if (coords.latitude === null || coords.longitude === null) continue;
     const marker = new AdvancedMarkerElement({
       map: window.googleMap,
       title: place.name,
