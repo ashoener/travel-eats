@@ -11,6 +11,12 @@ const excludedCategories = [
   "grocery",
 ];
 
+// Default location is Austin
+const defaultLocation = {
+  latitude: 30.3079541,
+  longitude: -97.9205502,
+};
+
 let locCache = {};
 let mapMarkers = [];
 
@@ -156,13 +162,22 @@ function clearMapMarkers() {
  */
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
-  const loc = await getCurrentLocation();
+  let loc;
+  try {
+    loc = await getCurrentLocation();
+  } catch (e) {
+    loc = defaultLocation;
+    //   TODO: show an error message?
+  }
 
   window.googleMap = new Map(document.getElementById("map"), {
     center: { lat: loc.latitude, lng: loc.longitude },
     zoom: 15,
     mapId,
   });
+
+  // Load markers based on default location
+  await addMapMarkers(await searchYelp(loc));
 }
 
 initMap();
