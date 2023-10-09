@@ -1,5 +1,5 @@
 const corsProxyUrl = "http://134.195.14.94:8051/";
-const mapId = "IDc40eba848b96533e";
+const mapId = "5ed84f6a72f0bdb7";
 const yelpApiKey =
   "YKZv5pI1m6Q1sXsMu3GIrrFrGzsvx6gLKRAMct8l90LQHCIQFI5lhsqc_po2q4w_juN71vfJTi1_EBbO3CU3flSKoo25L4RgDSfIj6SU46bHUq7RJkUFHvj3xhwkZXYx";
 const excludedCategories = [
@@ -78,7 +78,16 @@ async function addMapMarkers(places) {
       const { target } = domEvent;
 
       infoWindow.close();
-      infoWindow.setContent(marker.title);
+      infoWindow.setContent(
+        [
+          `<strong>${marker.title}</strong>`,
+          ...place.location.display_address,
+          `<a href="https://www.google.com/maps/place/${encodeURIComponent(
+            place.location.display_address.join(", ")
+          )}" target="_blank">View on Google Maps</a>`,
+          `<a href="${place.url}" target="_blank">View Information</a>`,
+        ].join("<br>")
+      );
       infoWindow.open(marker.map, marker);
     });
   }
