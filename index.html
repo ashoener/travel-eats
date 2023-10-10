@@ -9,17 +9,46 @@
   </head>
   <body>
     <header>
-      <p id="travelheader">Travel Eats</p>
-      <h1>Nearby Restaurants</h1>
+      <h1 id="travelheader">Travel Eats</h1>
+      <h2>Nearby Restaurants</h2>
+      <h3>Finding a good place to eat, made simple!</h3>
     </header>
-
-    <div id="map"></div>
-
-    <div id="results">
-      <h2>Search Results</h2>
-
-      <ul id="restaurant-list"></ul>
+    <div class="ui container" id="main-body">
+      <div class="ui stackable grid">
+        <div class="four wide column" id="column1">
+          <h3>Get Started!</h3>
+          <h3 id="userCurrentLocation"></h3>
+          <div class="ui celled list" id="locations"></div>
+        </div>
+        <div class="eight wide column" id="column2">
+          <!-- Map display goes here-->
+          <div id="map"></div>
+        </div>
+        <form class="four wide column ui form" id="search-form">
+          <!-- Custom search field goes here -->
+          <div class="ui category search" id="searchbar">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                name="searchArea"
+                placeholder="Search by area..."
+              />
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+          <div class="ui divider hidden"></div>
+          <button class="ui primary submit button" id="foodButton">
+            Click for Restaurants
+          </button>
+          <div class="ui error message"></div>
+        </form>
+      </div>
     </div>
+    <footer>
+      <p>&copy; 2023 Travel Eats</p>
+    </footer>
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
