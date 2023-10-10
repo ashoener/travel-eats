@@ -218,7 +218,7 @@ async function initMap() {
 
   window.googleMap = new Map(document.getElementById("map"), {
     center: { lat: loc.latitude, lng: loc.longitude },
-    zoom: 15,
+    zoom: 13,
     mapId,
   });
 
@@ -227,20 +227,3 @@ async function initMap() {
 }
 
 initMap();
-
-// Add css for local debugging only
-if (location.hostname == "127.0.0.1") {
-  const debugStyle = $(`<style>
-      #map {
-        height: 100%;
-      }
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-</style>`);
-
-  $("head").append(debugStyle);
-}
