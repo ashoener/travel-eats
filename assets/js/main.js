@@ -49,8 +49,10 @@ searchForm.form({
 searchForm.on("submit", async (e) => {
   e.preventDefault();
   if (searchForm.form("is valid")) {
+    $("#searchbar").toggleClass("loading");
     await searchAndDisplay(searchArea.val());
     searchForm.form("reset");
+    $("#searchbar").toggleClass("loading");
   }
 });
 
