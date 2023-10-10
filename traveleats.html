@@ -17,26 +17,32 @@
       <div class="ui stackable grid">
         <div class="four wide column" id="column1">
           <h3>Get Started!</h3>
-          <button id="foodButton">Click for Restaurants</button>
           <h3 id="userCurrentLocation"></h3>
+          <div class="ui celled list" id="locations"></div>
         </div>
         <div class="eight wide column" id="column2">
           <!-- Map display goes here-->
           <div id="map"></div>
         </div>
-        <div class="four wide column" id="column3">
+        <form class="four wide column ui form" id="search-form">
           <!-- Custom search field goes here -->
           <div class="ui category search" id="searchbar">
             <div class="ui icon input">
               <input
                 class="prompt"
                 type="text"
+                name="searchArea"
                 placeholder="Search by area..."
               />
             </div>
             <div class="results"></div>
           </div>
-        </div>
+          <div class="ui divider hidden"></div>
+          <button class="ui primary submit button" id="foodButton">
+            Click for Restaurants
+          </button>
+          <div class="ui error message"></div>
+        </form>
       </div>
     </div>
     <footer>

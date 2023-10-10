@@ -59,7 +59,7 @@ li {
   margin-bottom: 10px;
 }
 
-button {
+/* button {
   background-color: #0096c7;
   color: white;
   padding: 10px 20px;
@@ -67,11 +67,17 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
+} */
 
 #foodButton {
   color: #f2f0f5;
-  background-color: #3dade9;
+  /* background-color: #3dade9; */
+}
+
+#locations {
+  height: 20em;
+  overflow-y: scroll;
+  background-color: white;
 }
 
 button:hover {

@@ -26,6 +26,11 @@ let mapMarkers = [];
  */
 let searches = JSON.parse(localStorage.getItem("searches")) || [];
 
+const searchArea = $("#searchbar [name=searchArea]");
+const searchForm = $("#search-form");
+const currentLocation = $("#userCurrentLocation");
+const locations = $("#locations");
+
 /**
  * Updates the search bar autocomplete list
  */
@@ -34,6 +39,20 @@ function updateSearches() {
     source: searches.map((s) => ({ title: s })),
   });
 }
+
+searchForm.form({
+  fields: {
+    searchArea: "minLength[2]",
+  },
+});
+
+searchForm.on("submit", async (e) => {
+  e.preventDefault();
+  if (searchForm.form("is valid")) {
+    await searchAndDisplay(searchArea.val());
+    searchForm.form("reset");
+  }
+});
 
 updateSearches();
 
@@ -88,10 +107,24 @@ async function searchAndDisplay(location) {
   const places = await searchYelp(location);
   if (places.length) {
     if (typeof location == "string") {
-      searches.push(location);
-      if (searches.length > maxSearchesSaved) searches.shift();
-      localStorage.setItem("searches", JSON.stringify(searches));
-      updateSearches();
+      if (!searches.includes(location)) {
+        searches.push(location);
+        if (searches.length > maxSearchesSaved) searches.shift();
+        localStorage.setItem("searches", JSON.stringify(searches));
+        updateSearches();
+      }
+      currentLocation.text(location);
+    }
+    locations.html("");
+    for (let place of places) {
+      const el = $(`
+            <div class="item">
+              <div class="content">
+                <div class="header">${place.name}</div>
+                <a href="${place.url}" target="_blank">View Information</a>
+              </div>
+            </div>`);
+      locations.append(el);
     }
     await addMapMarkers(places);
     //   Set center to first location
@@ -211,8 +244,10 @@ async function initMap() {
   let loc;
   try {
     loc = await getCurrentLocation();
+    currentLocation.text("Your Location");
   } catch (e) {
     loc = defaultLocation;
+    currentLocation.text("Austin, TX");
     //   TODO: show an error message?
   }
 
@@ -223,7 +258,8 @@ async function initMap() {
   });
 
   // Load markers based on default location
-  await addMapMarkers(await searchYelp(loc));
+  // await addMapMarkers(await searchYelp(loc));
+  searchAndDisplay(loc);
 }
 
 initMap();
