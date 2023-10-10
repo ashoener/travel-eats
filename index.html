@@ -8,28 +8,27 @@
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
+    <header>
+      <p id="travelheader">Travel Eats</p>
+      <h1>Nearby Restaurants</h1>
+    </header>
+
+    <div id="map"></div>
+
+    <div id="results">
+      <h2>Search Results</h2>
+
+      <ul id="restaurant-list"></ul>
+    </div>
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
       crossorigin="anonymous"
     ></script>
     <script src="assets/js/semantic.min.js"></script>
+    <!-- prettier-ignore -->
+    <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+        ({key: "AIzaSyBvi63ov7-DDDAPikhQnIKCJc0Kw9qNwXk", v: "weekly"});</script>
     <script src="assets/js/main.js"></script>
   </body>
-  <header>
-    <p id="travelheader">Travel Eats</p>
-    <h1>Nearby Restaurants</h1>
-</header>
-
-<div id="map"></div>
-
-<div id="results">
-
-    <h2>Search Results</h2>
-
-    <ul id="restaurant-list"></ul>
-</div>
-<script src="script.js"></script>
-</body>
 </html>
-
