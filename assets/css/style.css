@@ -35,6 +35,7 @@ h1 {
 #map {
   height: 400px;
   width: 100%;
+  color: black;
 }
 .searchField {
   text-align: center;
