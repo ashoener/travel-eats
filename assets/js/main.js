@@ -169,6 +169,7 @@ async function addMapMarkers(places) {
         [
           `<strong>${marker.title}</strong>`,
           ...place.location.display_address,
+          "Currently " + (place.is_closed ? "Closed" : "Open"),
           `<a href="https://www.google.com/maps/place/${encodeURIComponent(
             place.location.display_address.join(", ")
           )}" target="_blank">View on Google Maps</a>`,
