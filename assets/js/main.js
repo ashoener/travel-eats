@@ -1,4 +1,4 @@
-const corsProxyUrl = "http://134.195.14.94:8051/";
+const corsProxyUrl = "https://cors.133700.xyz/";
 const mapId = "5ed84f6a72f0bdb7";
 const yelpApiKey =
   "YKZv5pI1m6Q1sXsMu3GIrrFrGzsvx6gLKRAMct8l90LQHCIQFI5lhsqc_po2q4w_juN71vfJTi1_EBbO3CU3flSKoo25L4RgDSfIj6SU46bHUq7RJkUFHvj3xhwkZXYx";
