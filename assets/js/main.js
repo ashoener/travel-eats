@@ -18,8 +18,13 @@ const defaultLocation = {
   longitude: -97.9205502,
 };
 
+let maxSearchesSaved = 5;
 let locCache = {};
 let mapMarkers = [];
+/**
+ * @type {String[]}
+ */
+let searches = JSON.parse(localStorage.getItem("searches")) || [];
 
 /**
  * @typedef Place
@@ -71,6 +76,11 @@ async function searchAndDisplay(location) {
   clearMapMarkers();
   const places = await searchYelp(location);
   if (places.length) {
+    if (typeof location == "string") {
+      searches.push(location);
+      if (searches.length > maxSearchesSaved) searches.shift();
+      localStorage.setItem("searches", JSON.stringify(searches));
+    }
     await addMapMarkers(places);
     //   Set center to first location
     const firstCoords = places[0].coordinates;
