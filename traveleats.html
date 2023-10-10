@@ -7,34 +7,41 @@
     <link rel="stylesheet" href="assets/css/semantic.min.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <header>
-    <h1 id="travelheader">Travel Eats</h1>
-  <h2>Nearby Restaurants</h2>
-  <h3>Finding a good place to eat, made simple!</h2>
-</header>
-<div class="container">
-  <div class="column" id="column1">
-    <h3>Get Started!</h3> 
-    <button id="foodButton">Click for Restaurants</button>
-   <h3 id="userCurrentLocation"></h3>
-  </div>
-  <div class="column" id="column2">
-    <!-- Map display goes here-->
-    <div id="map"></div>
-  </div>
-  <div class="column" id="column3">
-    <!-- Custom search field goes here -->
-    <div class="ui category search">
-      <div class="ui icon input">
-        <input class="prompt" type="text" placeholder="Search by area...">
-    
+  <body>
+    <header>
+      <h1 id="travelheader">Travel Eats</h1>
+      <h2>Nearby Restaurants</h2>
+      <h3>Finding a good place to eat, made simple!</h3>
+    </header>
+    <div class="ui container" id="main-body">
+      <div class="ui stackable grid">
+        <div class="four wide column" id="column1">
+          <h3>Get Started!</h3>
+          <button id="foodButton">Click for Restaurants</button>
+          <h3 id="userCurrentLocation"></h3>
+        </div>
+        <div class="eight wide column" id="column2">
+          <!-- Map display goes here-->
+          <div id="map"></div>
+        </div>
+        <div class="four wide column" id="column3">
+          <!-- Custom search field goes here -->
+          <div class="ui category search" id="searchbar">
+            <div class="ui icon input">
+              <input
+                class="prompt"
+                type="text"
+                placeholder="Search by area..."
+              />
+            </div>
+            <div class="results"></div>
+          </div>
+        </div>
       </div>
-      <div class="results"></div>
     </div>
-</div>
-<footer>
-  <p>2023 Travel Eats</p>
-</footer>
+    <footer>
+      <p>&copy; 2023 Travel Eats</p>
+    </footer>
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
