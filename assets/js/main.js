@@ -27,6 +27,17 @@ let mapMarkers = [];
 let searches = JSON.parse(localStorage.getItem("searches")) || [];
 
 /**
+ * Updates the search bar autocomplete list
+ */
+function updateSearches() {
+  $("#searchbar").search({
+    source: searches.map((s) => ({ title: s })),
+  });
+}
+
+updateSearches();
+
+/**
  * @typedef Place
  * @property {String} name
  * @property {{
@@ -80,6 +91,7 @@ async function searchAndDisplay(location) {
       searches.push(location);
       if (searches.length > maxSearchesSaved) searches.shift();
       localStorage.setItem("searches", JSON.stringify(searches));
+      updateSearches();
     }
     await addMapMarkers(places);
     //   Set center to first location
