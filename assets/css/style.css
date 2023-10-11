@@ -1,13 +1,20 @@
+:root {
+  --background-color: #00587c;
+}
+
 header {
-  background-color: #00587c;
+  background-color: var(--background-color);
   text-align: center;
+}
+
+header h1 {
   padding: 20px;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(to bottom, #0077b6, #00587c);
+  background: linear-gradient(to bottom, #0077b6, var(--background-color)) fixed;
   font-family: Arial, sans-serif;
   color: white;
   margin: 0;
@@ -60,19 +67,28 @@ li {
   margin-bottom: 10px;
 }
 
-/* button {
-  background-color: #0096c7;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-} */
+.hero {
+  background-image: url("../../assets/images/iStock-1149801149.jpg");
+  background-repeat: no-repeat !important;
+  background-position: bottom;
+  background-size: cover;
+  border-radius: 0;
+  width: 100%;
+  height: 30em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-text {
+  background-color: var(--background-color);
+  width: fit-content;
+  margin: 0 auto;
+  padding: 1em 2em;
+}
 
 #foodButton {
   color: #f2f0f5;
-  /* background-color: #3dade9; */
 }
 
 #locations {
