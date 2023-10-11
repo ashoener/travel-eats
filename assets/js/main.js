@@ -119,14 +119,46 @@ async function searchAndDisplay(location) {
     }
     locations.html("");
     for (let place of places) {
-      const el = $(`
-            <div class="item">
-              <div class="content">
-                <div class="header">${place.name}</div>
-                <a href="${place.url}" target="_blank">View Information</a>
-              </div>
-            </div>`);
-      locations.append(el);
+      const coords = place.coordinates;
+      window.mapService.findPlaceFromQuery(
+        {
+          query: place.name,
+          fields: ["place_id"],
+          locationBias: { lat: coords.latitude, lng: coords.longitude },
+        },
+        (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            place.maps_url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+              place.name
+            )}&query_place_id=${results[0].place_id}`;
+            const el = $(`
+                  <div class="item">
+                    <div class="content">
+                      <div class="header">${place.name}</div>
+                      <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        place.name
+                      )}&query_place_id=${
+              results[0].place_id
+            }" target="_blank">View on Google Maps</a>
+                      <br>
+                      <a href="${
+                        place.url
+                      }" target="_blank">View Information</a>
+                    </div>
+                  </div>`);
+            locations.append(el);
+          } else {
+            const el = $(`
+                  <div class="item">
+                    <div class="content">
+                      <div class="header">${place.name}</div>
+                      <a href="${place.url}" target="_blank">View Information</a>
+                    </div>
+                  </div>`);
+            locations.append(el);
+          }
+        }
+      );
     }
     await addMapMarkers(places);
     //   Set center to first location
@@ -209,8 +241,6 @@ async function addMapMarkers(places) {
     mapMarkers.push(marker);
 
     marker.addListener("click", ({ domEvent, latLng }) => {
-      const { target } = domEvent;
-
       function displayPlace(url) {
         infoWindow.setContent(
           [
@@ -223,27 +253,11 @@ async function addMapMarkers(places) {
         );
       }
       infoWindow.close();
-      window.mapService.findPlaceFromQuery(
-        {
-          query: place.name,
-          fields: ["place_id"],
-          locationBias: { lat: coords.latitude, lng: coords.longitude },
-        },
-        (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            displayPlace(
-              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                place.name
-              )}&query_place_id=${results[0].place_id}`
-            );
-          }
-        }
-      );
-
       displayPlace(
-        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          place.name
-        )}`
+        place.maps_url ||
+          `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+            place.name
+          )}`
       );
       infoWindow.open(marker.map, marker);
     });
