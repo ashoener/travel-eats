@@ -25,11 +25,21 @@ let mapMarkers = [];
  * @type {String[]}
  */
 let searches = JSON.parse(localStorage.getItem("searches")) || [];
+let placeUrlCache = JSON.parse(localStorage.getItem("place_urls")) || {};
 
 const searchArea = $("#searchbar [name=searchArea]");
 const searchForm = $("#search-form");
 const currentLocation = $("#userCurrentLocation");
 const locations = $("#locations");
+
+/**
+ * Returns a unique ID for a place
+ * @param {Place} place
+ * @returns {String}
+ */
+function getPlaceUrlCacheId(place) {
+  return `${place.name}${place.coordinates.latitude},${place.coordinates.longitude}`;
+}
 
 /**
  * Updates the search bar autocomplete list
@@ -118,48 +128,55 @@ async function searchAndDisplay(location) {
       currentLocation.text(location);
     }
     locations.html("");
+    const placesInCache = Object.keys(placeUrlCache).length;
     for (let place of places) {
       const coords = place.coordinates;
-      window.mapService.findPlaceFromQuery(
-        {
-          query: place.name,
-          fields: ["place_id"],
-          locationBias: { lat: coords.latitude, lng: coords.longitude },
-        },
-        (results, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            place.maps_url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-              place.name
-            )}&query_place_id=${results[0].place_id}`;
-            const el = $(`
+      const cacheId = getPlaceUrlCacheId(place);
+      if (cacheId in placeUrlCache) place.maps_url = placeUrlCache[cacheId];
+      else {
+        await new Promise((res, rej) => {
+          window.mapService.findPlaceFromQuery(
+            {
+              query: place.name,
+              fields: ["place_id"],
+              locationBias: { lat: coords.latitude, lng: coords.longitude },
+            },
+            (results, status) => {
+              if (
+                status === google.maps.places.PlacesServiceStatus.OK &&
+                results
+              ) {
+                place.maps_url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  place.name
+                )}&query_place_id=${results[0].place_id}`;
+                placeUrlCache[cacheId] = place.maps_url;
+                res();
+              } else {
+                res();
+              }
+            }
+          );
+        });
+      }
+      const el = $(`
                   <div class="item">
                     <div class="content">
                       <div class="header">${place.name}</div>
-                      <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                        place.name
-                      )}&query_place_id=${
-              results[0].place_id
-            }" target="_blank">View on Google Maps</a>
+                      ${
+                        "maps_url" in place
+                          ? `<a href="${place.maps_url}" target="_blank">View on Google Maps</a>`
+                          : ""
+                      }
                       <br>
                       <a href="${
                         place.url
                       }" target="_blank">View Information</a>
                     </div>
                   </div>`);
-            locations.append(el);
-          } else {
-            const el = $(`
-                  <div class="item">
-                    <div class="content">
-                      <div class="header">${place.name}</div>
-                      <a href="${place.url}" target="_blank">View Information</a>
-                    </div>
-                  </div>`);
-            locations.append(el);
-          }
-        }
-      );
+      locations.append(el);
     }
+    if (Object.keys(placeUrlCache).length != placesInCache)
+      localStorage.setItem("place_urls", JSON.stringify(placeUrlCache));
     await addMapMarkers(places);
     //   Set center to first location
     const firstCoords = places[0].coordinates;
