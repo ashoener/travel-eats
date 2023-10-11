@@ -52,6 +52,11 @@ h1 {
   padding: 20px;
 }
 
+.item:hover {
+background-color: rgb(217, 233, 243);
+transition: background-color 0.5s;
+}
+
 h2 {
   font-size: 40px;
 }
@@ -108,4 +113,9 @@ footer {
   color: white;
   text-align: center;
   font-size: 25px;
+}
+
+footer:hover {
+  background-color: #00587c;
+  transition: background-color 0.7s;
 }
