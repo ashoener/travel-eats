@@ -47,6 +47,7 @@ function getPlaceUrlCacheId(place) {
 function updateSearches() {
   $("#searchbar").search({
     source: searches.map((s) => ({ title: s })),
+    showNoResults: false,
   });
 }
 
@@ -65,6 +66,8 @@ searchForm.on("submit", async (e) => {
     $("#searchbar").toggleClass("loading");
   }
 });
+
+$("#searchbar i").on("click", (e) => searchForm.submit());
 
 updateSearches();
 
