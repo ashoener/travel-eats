@@ -23,10 +23,10 @@ Travel Eats is a web application that helps users discover nearby restaurants ba
 
 ## Usage
 
--Open the website in a web browser.
--Use the search bar to enter a city or allow the website to use your current location.
--Click the "Click for Restaurants" button to search for nearby restaurants.
--View restaurant markers on the map and click on them to get more information.
+- Open the website in a web browser.
+- Use the search bar to enter a city or allow the website to use your current location.
+- Click the "Click for Restaurants" button to search for nearby restaurants.
+- View restaurant markers on the map and click on them to get more information.
 
 To use this project, you may view the live website [here](https://ashoener.github.io/travel-eats/).
 
