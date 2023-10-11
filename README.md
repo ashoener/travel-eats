@@ -7,6 +7,7 @@
 Travel Eats is a web application that helps users discover nearby restaurants based on their current location or a specified city. It leverages the Yelp API and Google Maps to provide restaurant recommendations and display them on an interactive map.
 
 ## Features
+
 - Search by Location: Users can input their current location, or they can search for restaurants in a specific city.
 - Interactive Map: The application displays restaurants on an interactive map, making it easy to visualize their proximity.
 - Restaurant Details: Clicking on a map marker reveals information about the restaurant, such as its name, address, and whether it's open.
@@ -29,11 +30,9 @@ Travel Eats is a web application that helps users discover nearby restaurants ba
 
 To use this project, you may view the live website [here](https://ashoener.github.io/travel-eats/).
 
-
-
 ## License
 
-This project is licensed under the MIT License - see the  [LICENSE] (https://github.com/ashoener/travel-eats/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/ashoener/travel-eats/blob/main/LICENSE) file for details.
 
 ## Acknowledgments
 
