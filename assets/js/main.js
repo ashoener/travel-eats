@@ -25,11 +25,21 @@ let mapMarkers = [];
  * @type {String[]}
  */
 let searches = JSON.parse(localStorage.getItem("searches")) || [];
+let placeUrlCache = JSON.parse(localStorage.getItem("place_urls")) || {};
 
 const searchArea = $("#searchbar [name=searchArea]");
 const searchForm = $("#search-form");
 const currentLocation = $("#userCurrentLocation");
 const locations = $("#locations");
+
+/**
+ * Returns a unique ID for a place
+ * @param {Place} place
+ * @returns {String}
+ */
+function getPlaceUrlCacheId(place) {
+  return `${place.name}${place.coordinates.latitude},${place.coordinates.longitude}`;
+}
 
 /**
  * Updates the search bar autocomplete list
@@ -118,16 +128,56 @@ async function searchAndDisplay(location) {
       currentLocation.text(location);
     }
     locations.html("");
+    const placesInCache = Object.keys(placeUrlCache).length;
     for (let place of places) {
+      const coords = place.coordinates;
+      const cacheId = getPlaceUrlCacheId(place);
+      if (cacheId in placeUrlCache) {
+        place.maps_url = placeUrlCache[cacheId];
+      } else {
+        await new Promise((res, rej) => {
+          window.mapService.findPlaceFromQuery(
+            {
+              query: place.name,
+              fields: ["place_id"],
+              locationBias: { lat: coords.latitude, lng: coords.longitude },
+            },
+            (results, status) => {
+              if (
+                status === google.maps.places.PlacesServiceStatus.OK &&
+                results
+              ) {
+                place.maps_url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  place.name
+                )}&query_place_id=${results[0].place_id}`;
+                placeUrlCache[cacheId] = place.maps_url;
+                res();
+              } else {
+                res();
+              }
+            }
+          );
+        });
+      }
       const el = $(`
-            <div class="item">
-              <div class="content">
-                <div class="header">${place.name}</div>
-                <a href="${place.url}" target="_blank">View Information</a>
-              </div>
-            </div>`);
+                  <div class="item">
+                    <div class="content">
+                      <div class="header">${place.name}</div>
+                      ${
+                        "maps_url" in place
+                          ? `<a href="${place.maps_url}" target="_blank">View on Google Maps</a>`
+                          : ""
+                      }
+                      <br>
+                      <a href="${
+                        place.url
+                      }" target="_blank">View Information</a>
+                    </div>
+                  </div>`);
       locations.append(el);
     }
+    if (Object.keys(placeUrlCache).length != placesInCache)
+      localStorage.setItem("place_urls", JSON.stringify(placeUrlCache));
     await addMapMarkers(places);
     //   Set center to first location
     const firstCoords = places[0].coordinates;
@@ -209,19 +259,23 @@ async function addMapMarkers(places) {
     mapMarkers.push(marker);
 
     marker.addListener("click", ({ domEvent, latLng }) => {
-      const { target } = domEvent;
-
+      function displayPlace(url) {
+        infoWindow.setContent(
+          [
+            `<strong>${marker.title}</strong>`,
+            ...place.location.display_address,
+            "Currently " + (place.is_closed ? "Closed" : "Open"),
+            `<a href="${url}" target="_blank">View on Google Maps</a>`,
+            `<a href="${place.url}" target="_blank">View Information</a>`,
+          ].join("<br>")
+        );
+      }
       infoWindow.close();
-      infoWindow.setContent(
-        [
-          `<strong>${marker.title}</strong>`,
-          ...place.location.display_address,
-          "Currently " + (place.is_closed ? "Closed" : "Open"),
-          `<a href="https://www.google.com/maps/place/${encodeURIComponent(
-            place.location.display_address.join(", ")
-          )}" target="_blank">View on Google Maps</a>`,
-          `<a href="${place.url}" target="_blank">View Information</a>`,
-        ].join("<br>")
+      displayPlace(
+        place.maps_url ||
+          `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+            place.name
+          )}`
       );
       infoWindow.open(marker.map, marker);
     });
@@ -258,6 +312,8 @@ async function initMap() {
     zoom: 13,
     mapId,
   });
+  const { PlacesService } = await google.maps.importLibrary("places");
+  window.mapService = new PlacesService(window.googleMap);
 
   // Load markers based on default location
   // await addMapMarkers(await searchYelp(loc));
