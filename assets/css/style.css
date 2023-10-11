@@ -5,6 +5,8 @@
 header {
   background-color: var(--background-color);
   text-align: center;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  background-color: #1691d2;;
 }
 
 header h1 {
@@ -35,8 +37,9 @@ h1 {
 }
 
 #travelheader {
-  font-size: 30px;
+  font-size: 40px;
   text-align: left;
+  font-family: tahoma;
 }
 
 #map {
@@ -85,6 +88,7 @@ li {
   width: fit-content;
   margin: 0 auto;
   padding: 1em 2em;
+  opacity: 0.85;
 }
 
 #foodButton {
