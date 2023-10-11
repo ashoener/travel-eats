@@ -1,13 +1,16 @@
 header {
   background-color: #00587c;
   text-align: center;
+}
+
+header h1 {
   padding: 20px;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(to bottom, #0077b6, #00587c);
+  background: linear-gradient(to bottom, #0077b6, #00587c) fixed;
   font-family: Arial, sans-serif;
   color: white;
   margin: 0;
@@ -58,6 +61,26 @@ ul {
 
 li {
   margin-bottom: 10px;
+}
+
+.hero {
+  background-image: url("../../assets/images/iStock-1149801149.jpg");
+  background-repeat: no-repeat !important;
+  background-position: bottom;
+  background-size: cover;
+  border-radius: 0;
+  width: 100%;
+  height: 30em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-text {
+  background-color: #00587c;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 1em 2em;
 }
 
 /* button {
