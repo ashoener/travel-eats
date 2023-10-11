@@ -132,8 +132,9 @@ async function searchAndDisplay(location) {
     for (let place of places) {
       const coords = place.coordinates;
       const cacheId = getPlaceUrlCacheId(place);
-      if (cacheId in placeUrlCache) place.maps_url = placeUrlCache[cacheId];
-      else {
+      if (cacheId in placeUrlCache) {
+        place.maps_url = placeUrlCache[cacheId];
+      } else {
         await new Promise((res, rej) => {
           window.mapService.findPlaceFromQuery(
             {
