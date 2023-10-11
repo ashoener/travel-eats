@@ -8,7 +8,7 @@ Travel Eats is a web application that helps users discover nearby restaurants ba
 - Search by Location: Users can input their current location, or they can search for restaurants in a specific city.
 - Interactive Map: The application displays restaurants on an interactive map, making it easy to visualize their proximity.
 - Restaurant Details: Clicking on a map marker reveals information about the restaurant, such as its name, address, and whether it's open.
-- ecent Searches: The application keeps a history of recent searches for quick access.
+- Recent Searches: The application keeps a history of recent searches for quick access.
 - Mobile Responsive: The website is designed to work seamlessly on both desktop and mobile devices.
 
 ### Technologies Used
