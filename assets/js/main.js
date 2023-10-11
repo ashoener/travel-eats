@@ -47,6 +47,7 @@ function getPlaceUrlCacheId(place) {
 function updateSearches() {
   $("#searchbar").search({
     source: searches.map((s) => ({ title: s })),
+    showNoResults: false,
   });
 }
 
@@ -65,6 +66,8 @@ searchForm.on("submit", async (e) => {
     $("#searchbar").toggleClass("loading");
   }
 });
+
+$("#searchbar i").on("click", (e) => searchForm.submit());
 
 updateSearches();
 
@@ -129,6 +132,13 @@ async function searchAndDisplay(location) {
     }
     locations.html("");
     const placesInCache = Object.keys(placeUrlCache).length;
+    await addMapMarkers(places);
+    const firstCoords = places[0].coordinates;
+    //   Set center to first location
+    googleMap.setCenter({
+      lat: firstCoords.latitude,
+      lng: firstCoords.longitude,
+    });
     for (let place of places) {
       const coords = place.coordinates;
       const cacheId = getPlaceUrlCacheId(place);
@@ -178,13 +188,6 @@ async function searchAndDisplay(location) {
     }
     if (Object.keys(placeUrlCache).length != placesInCache)
       localStorage.setItem("place_urls", JSON.stringify(placeUrlCache));
-    await addMapMarkers(places);
-    //   Set center to first location
-    const firstCoords = places[0].coordinates;
-    googleMap.setCenter({
-      lat: firstCoords.latitude,
-      lng: firstCoords.longitude,
-    });
   }
 }
 
