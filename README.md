@@ -38,6 +38,6 @@ This project is licensed under the MIT License - see the  [LICENSE] https://gith
 - This application uses the Yelp API and Google Maps API for restaurant data and mapping, respectively.
 - It was built using JavaScript, jQuery, and Semantic UI for the user interface.
 
-[^1] Feel free to customize this README file further to include specific details about your project, deployment instructions, and any other information that you think would be helpful for users and contributors.
+Feel free to customize this README file further to include specific details about your project, deployment instructions, and any other information that you think would be helpful for users and contributors. [^1]
 
 
