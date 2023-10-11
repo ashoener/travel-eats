@@ -81,7 +81,7 @@ li {
 }
 
 .hero-text {
-  background-color: var(--background-color);
+  background-color: #00587cd9;
   width: fit-content;
   margin: 0 auto;
   padding: 1em 2em;
