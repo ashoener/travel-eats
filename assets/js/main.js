@@ -211,17 +211,39 @@ async function addMapMarkers(places) {
     marker.addListener("click", ({ domEvent, latLng }) => {
       const { target } = domEvent;
 
+      function displayPlace(url) {
+        infoWindow.setContent(
+          [
+            `<strong>${marker.title}</strong>`,
+            ...place.location.display_address,
+            "Currently " + (place.is_closed ? "Closed" : "Open"),
+            `<a href="${url}" target="_blank">View on Google Maps</a>`,
+            `<a href="${place.url}" target="_blank">View Information</a>`,
+          ].join("<br>")
+        );
+      }
       infoWindow.close();
-      infoWindow.setContent(
-        [
-          `<strong>${marker.title}</strong>`,
-          ...place.location.display_address,
-          "Currently " + (place.is_closed ? "Closed" : "Open"),
-          `<a href="https://www.google.com/maps/place/${encodeURIComponent(
-            place.location.display_address.join(", ")
-          )}" target="_blank">View on Google Maps</a>`,
-          `<a href="${place.url}" target="_blank">View Information</a>`,
-        ].join("<br>")
+      window.mapService.findPlaceFromQuery(
+        {
+          query: place.name,
+          fields: ["place_id"],
+          locationBias: { lat: coords.latitude, lng: coords.longitude },
+        },
+        (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+            displayPlace(
+              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                place.name
+              )}&query_place_id=${results[0].place_id}`
+            );
+          }
+        }
+      );
+
+      displayPlace(
+        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+          place.name
+        )}`
       );
       infoWindow.open(marker.map, marker);
     });
@@ -258,6 +280,8 @@ async function initMap() {
     zoom: 13,
     mapId,
   });
+  const { PlacesService } = await google.maps.importLibrary("places");
+  window.mapService = new PlacesService(window.googleMap);
 
   // Load markers based on default location
   // await addMapMarkers(await searchYelp(loc));
