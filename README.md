@@ -33,7 +33,7 @@ To use this project, you may view the live website [here](https://ashoener.githu
 
 ## License
 
-This project is licensed under the MIT License - see the  [LICENSE] (https://github.com/ashoener/travel-eats/blob/main/LICENSE file for details).
+This project is licensed under the MIT License - see the  [LICENSE] (https://github.com/ashoener/travel-eats/blob/main/LICENSE) file for details.
 
 ## Acknowledgments
 
