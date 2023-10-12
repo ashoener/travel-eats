@@ -23,9 +23,13 @@ body {
   padding: 0;
 }
 
-/* container */
 .column {
   text-align: center;
+}
+
+.ui-celled-list{
+  border-radius: 5px;
+  color:black
 }
 
 h1 {
@@ -46,6 +50,7 @@ h1 {
   height: 400px;
   width: 100%;
   color: black;
+  border-radius: 18px;
 }
 .searchField {
   text-align: center;
@@ -54,7 +59,10 @@ h1 {
 #search-results {
   padding: 20px;
 }
-
+.item:hover{
+background-color: rgb(217, 233, 243);
+transition: background-color 0.5s;
+}
 h2 {
   font-size: 40px;
 }
@@ -68,6 +76,12 @@ ul {
 
 li {
   margin-bottom: 10px;
+}
+
+li:hover {
+  background-color: #0077b6;
+  color: white;
+  transition: background-color 0.3s;
 }
 
 .hero {
@@ -89,20 +103,13 @@ li {
   margin: 0 auto;
   padding: 1em 2em;
   opacity: 0.85;
-}
-
-#foodButton {
-  color: #f2f0f5;
+  border-radius: 18px;
 }
 
 #locations {
   height: 20em;
   overflow-y: scroll;
-  background-color: white;
-}
-
-button:hover {
-  background-color: #0077b6;
+  background-color: rgb(245, 247, 249);
 }
 
 footer {
@@ -112,4 +119,9 @@ footer {
   color: white;
   text-align: center;
   font-size: 25px;
+}
+
+footer:hover {
+  background-color: #00587c;
+  transition: background-color 0.7s;
 }
