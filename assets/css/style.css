@@ -43,11 +43,15 @@ h1 {
   height: 400px;
   width: 100%;
   color: black;
+  border-radius: 18px;
 }
 .searchField {
   text-align: center;
 }
-
+.ui-celled-list{
+  border-radius: 4px;
+  color: black;
+  
 #search-results {
   padding: 20px;
 }
@@ -90,6 +94,7 @@ li {
   width: fit-content;
   margin: 0 auto;
   padding: 1em 2em;
+  border-radius: 18px;
 }
 
 #foodButton {
